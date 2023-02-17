@@ -16,11 +16,7 @@ async fn main() -> Result<()> {
     color_eyre::install()?;
     Registry::default()
         .with(EnvFilter::from_default_env())
-        .with(
-            HierarchicalLayer::new(2)
-                .with_targets(true)
-                .with_bracketed_fields(true),
-        )
+        .with(HierarchicalLayer::new(4))
         .with(tracing_error::ErrorLayer::default())
         .init();
 

@@ -75,6 +75,7 @@ fn get_response_to_line(line: &str) -> Result<Vec<u8>> {
     Ok(serde_json::to_vec(&response).unwrap())
 }
 
+#[instrument(ret)]
 fn is_prime(num: f64) -> bool {
     if num != num.round() {
         return false;
