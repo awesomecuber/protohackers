@@ -8,7 +8,7 @@ pub async fn run_server(ip: &str) -> Result<()> {
     info!("listening at {ip}:1337");
     loop {
         let (stream, _) = listener.accept().await?;
-        tokio::task::spawn(handle_stream(stream));
+        tokio::spawn(handle_stream(stream));
     }
 }
 

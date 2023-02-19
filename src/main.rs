@@ -33,6 +33,7 @@ async fn main() -> Result<()> {
         0 => p00_smoke_test::run_server(ip).await?,
         1 => p01_prime_time::run_server(ip).await?,
         2 => p02_means_to_an_end::run_server(ip).await?,
+        3 => p03_budget_chat::run_server(ip).await?,
         _ => return Err(eyre!("Invalid problem number")),
     }
 
