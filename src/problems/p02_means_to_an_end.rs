@@ -8,9 +8,9 @@ use tokio::{
 use tracing::{info, instrument, warn};
 
 #[instrument]
-pub async fn run_server(ip: &str) -> Result<()> {
-    let listener = TcpListener::bind(format!("{ip}:1337")).await?;
-    info!("listening at {ip}:1337");
+pub async fn run_server(ip: &str, port: u32) -> Result<()> {
+    let listener = TcpListener::bind(format!("{ip}:{port}")).await?;
+    info!("listening at {ip}:{port}");
     loop {
         let (stream, _) = listener.accept().await?;
         tokio::spawn(handle_stream(stream));

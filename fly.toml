@@ -1,0 +1,39 @@
+# fly.toml file generated for nico-protohackers on 2023-02-20T23:48:19-08:00
+
+app = "nico-protohackers"
+kill_signal = "SIGINT"
+kill_timeout = 5
+
+[env]
+RUST_LOG = "debug"
+
+[[services]]
+internal_port = 9000
+protocol = "tcp"
+[[services.ports]]
+port = 9000
+
+[[services]]
+internal_port = 9001
+protocol = "tcp"
+[[services.ports]]
+port = 9001
+
+[[services]]
+internal_port = 9002
+protocol = "tcp"
+[[services.ports]]
+port = 9002
+
+[[services]]
+internal_port = 9003
+protocol = "tcp"
+[[services.ports]]
+port = 9003
+
+[[services]]
+internal_port = 9004
+protocol = "udp"
+[[services.ports]]
+port = 9004
+

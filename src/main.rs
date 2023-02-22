@@ -1,9 +1,5 @@
-use std::str;
-
-use color_eyre::eyre::WrapErr;
-use color_eyre::{eyre::eyre, Result};
+use color_eyre::Result;
 use problems::*;
-use tokio::process::Command;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 use tracing_subscriber::{EnvFilter, Registry};
@@ -20,22 +16,14 @@ async fn main() -> Result<()> {
         .with(tracing_error::ErrorLayer::default())
         .init();
 
-    let problem: u32 = std::env::args()
-        .nth(1)
-        .ok_or_else(|| eyre!("Must specify problem number"))?
-        .parse()
-        .wrap_err("Couldn't parse problem number as a number")?;
+    let tcp_ip = "0.0.0.0";
+    let udp_ip = "fly-global-services";
 
-    let ip = Command::new("hostname").arg("-I").output().await?.stdout;
-    let ip = str::from_utf8(&ip)?.trim();
-
-    match problem {
-        0 => p00_smoke_test::run_server(ip).await?,
-        1 => p01_prime_time::run_server(ip).await?,
-        2 => p02_means_to_an_end::run_server(ip).await?,
-        3 => p03_budget_chat::run_server(ip).await?,
-        _ => return Err(eyre!("Invalid problem number")),
-    }
+    p00_smoke_test::run_server(tcp_ip, 9000).await?;
+    p01_prime_time::run_server(tcp_ip, 9001).await?;
+    p02_means_to_an_end::run_server(tcp_ip, 9002).await?;
+    p03_budget_chat::run_server(tcp_ip, 9003).await?;
+    p04_unusual_database_program::run_server(udp_ip, 9004).await?;
 
     Ok(())
 }
