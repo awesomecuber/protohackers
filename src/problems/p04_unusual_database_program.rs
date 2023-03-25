@@ -8,7 +8,7 @@ use tracing::{info, instrument};
 pub async fn run_server(ip: &str, port: u32) -> Result<()> {
     let socket = UdpSocket::bind(format!("{ip}:{port}")).await?;
     info!("listening at {ip}:{port}");
-    let mut buf = [0; 1024];
+    let mut buf = vec![0; 1024];
 
     let mut store = HashMap::new();
     store.insert("version".to_owned(), "Nico's Store".to_owned());
@@ -18,13 +18,14 @@ pub async fn run_server(ip: &str, port: u32) -> Result<()> {
         let Ok(request) = std::str::from_utf8(&buf[..len]) else {
             continue;
         };
+        let request = request.trim();
         if let Some(response) = get_response(request, &mut store) {
             socket.send_to(response.as_bytes(), addr).await?;
         }
     }
 }
 
-#[instrument(ret)]
+#[instrument(ret, skip(store))]
 fn get_response(request: &str, store: &mut HashMap<String, String>) -> Option<String> {
     let mut parts = request.splitn(2, '=');
     let key = parts.next().unwrap();

@@ -17,13 +17,16 @@ async fn main() -> Result<()> {
         .init();
 
     let tcp_ip = "0.0.0.0";
-    let udp_ip = "fly-global-services";
+    // let udp_ip = "fly-global-services";
+    let udp_ip = "0.0.0.0";
 
-    p00_smoke_test::run_server(tcp_ip, 9000).await?;
-    p01_prime_time::run_server(tcp_ip, 9001).await?;
-    p02_means_to_an_end::run_server(tcp_ip, 9002).await?;
-    p03_budget_chat::run_server(tcp_ip, 9003).await?;
-    p04_unusual_database_program::run_server(udp_ip, 9004).await?;
+    tokio::try_join!(
+        p00_smoke_test::run_server(tcp_ip, 9000),
+        p01_prime_time::run_server(tcp_ip, 9001),
+        p02_means_to_an_end::run_server(tcp_ip, 9002),
+        p03_budget_chat::run_server(tcp_ip, 9003),
+        p04_unusual_database_program::run_server(udp_ip, 9004),
+    )?;
 
     Ok(())
 }
